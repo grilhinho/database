@@ -1,11 +1,3 @@
-// npm init -> cria o pacote inicial API
-// npm i express
-const express = require("express")
-const app = express()
-app.use(express.json())
-const port = 3000
-// npm i mysql2
-const db = require("./db")
 
 app.get("/aula", async (req, res) => {
     try {
@@ -15,6 +7,18 @@ app.get("/aula", async (req, res) => {
     } catch (erro) {
         res.status(500).json({erro: erro.message})
     }
+})
+
+app.post("/aula" , async (req, res) => {
+ try {
+    const dados = req.body
+    const resultado = await db.pool.query(
+        "INSERT INTO aula ( serie, turma,componente, professor) VALUES (?, ?, ?, ?)", 
+         [dados.serie, dados.turma, dados.componente, dados,professor]
+    )
+ } catch (erro) {
+    res.status(500).json({erro: erro.message})
+ }
 })
 
 app.listen(port, ()=>{
